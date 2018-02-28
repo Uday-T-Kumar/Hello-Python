@@ -10,6 +10,9 @@ that I am going to begin learning. This is social pressure added to push forward
 
 1. Python
    - Basics
+   - Code contributions to Openstack: 
+      -- http://stackalytics.com/report/users/uday.t.kumar
+      -- https://review.openstack.org/416943
 
 2. Docker
    - Basics
@@ -22,6 +25,11 @@ that I am going to begin learning. This is social pressure added to push forward
    - Facts
    - Modules
    - Hiera
+   - Code contributions to Openstack: 
+     -- https://review.openstack.org/416943
+     -- https://review.openstack.org/#/c/418901/
+     -- https://review.openstack.org/#/c/420338/
+     -- https://review.openstack.org/#/c/421312/
    
 5. Ansible
    - Basics
