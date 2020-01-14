@@ -1,0 +1,32 @@
+---
+# tasks file for httpd24---
+#  tasks:
+    - name: Start httpd24-httpd.service and enable it
+      service:
+        name: httpd24-httpd.service
+        state: started
+        enabled: yes
+      become: true
+
+    - name: Change the DocumentRoot path in httpd.conf
+      lineinfile:
+        path: /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf
+        #path: /tmp/httpd.conf
+        regexp: '^DocumentRoot \"\/opt\/rh\/httpd24\/root\/var\/www\/html'
+        line: 'DocumentRoot "/opt/rh/httpd24/root/var/www'
+        state: present
+        backrefs: yes
+        backup: yes
+      become: yes
+      #notify: restart apache
+
+    - name: Changing the Directory entry in httpd.conf
+      lineinfile:
+        path: /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf
+        #path: /tmp/httpd.conf
+        regexp: '    DirectoryIndex index.html'
+        line: '    DirectoryIndex index.html index.html.var index.php'
+        state: present
+        backrefs: yes
+      become: yes
+      #notify: restart apache    

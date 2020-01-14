@@ -1,0 +1,8 @@
+---
+# vars file for MariaDB
+    mysql_admin: root
+    mysql_new_pass: <enterNewPassword>
+    wiki_user: wiki
+    wiki_pass: <enterWikiPassword>
+    wiki_db: wikidatabase
+    

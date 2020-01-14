@@ -1,0 +1,79 @@
+---
+# tasks file for MariaDB---
+#  tasks:
+    - name: Start Maria/MySQL db and enable it
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+      become: true
+
+    - name: Check for package MySQL-python
+      yum:
+        name: MySQL-python
+        state: present
+      become: true
+    
+    - name: Changing Maria/MySQL root password
+      mysql_user:
+        login_user: '{{ mysql_admin }}'
+        login_password: ''
+        name: '{{ mysql_admin }}'
+        password: '{{ mysql_new_pass }}'
+        #host: ansible-target1
+        host: localhost
+
+    - name: Securing the Maria/MySQL root user for localhost- IPv6 (::1)
+      mysql_user:
+        login_user: '{{ mysql_admin }}'
+        login_password: '{{ mysql_new_pass }}'
+        user: '{{ mysql_admin }}'
+        password: '{{ mysql_new_pass }}'
+        host: ::1
+
+    - name: Securing the Maria/MySQL root user for localhost- IPv4 (127.0.0.1)
+      mysql_user:
+        login_user: '{{ mysql_admin }}'
+        login_password: '{{ mysql_new_pass }}'
+        user: '{{ mysql_admin }}'
+        password: '{{ mysql_new_pass }}'
+        host: 127.0.0.1
+
+    - name: Securing the Maria/MySQL root user for localhost domain
+      mysql_user:
+        login_user: '{{ mysql_admin }}'
+        login_password: '{{ mysql_new_pass }}'
+        user: '{{ mysql_admin }}'
+        password: '{{ mysql_new_pass }}'
+        host: localhost
+
+    - name: Removes all anonymous users accounts
+      mysql_user:
+        login_user: '{{ mysql_admin }}'
+        login_password: '{{ mysql_new_pass }}'
+        name: ''
+        host_all: yes
+        state: absent
+
+    - name: Remove the test database
+      mysql_db:
+        login_user: '{{ mysql_admin }}'
+        login_password: '{{ mysql_new_pass }}'
+        name: test
+        state: absent
+
+    - name: Create a new database named wikidatabase
+      mysql_db:
+        login_user: '{{ mysql_admin }}'
+        login_password: '{{ mysql_new_pass }}'
+        name: '{{ wiki_db }}'
+        state: present
+
+    - name: Create a db user named wiki and grant all privileges on wikidatabase
+      mysql_user:
+        login_user: '{{ mysql_admin }}'
+        login_password: '{{ mysql_new_pass }}'
+        name: '{{ wiki_user }}'
+        password: '{{ wiki_pass }}'
+        priv: '{{ wiki_db }}.*:ALL,GRANT'
+        state: present    

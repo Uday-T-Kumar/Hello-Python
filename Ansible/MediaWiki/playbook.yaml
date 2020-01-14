@@ -1,0 +1,10 @@
+---
+- name: Install OS packages
+  hosts: ansible-target1
+  roles:
+    - Centos7sclo
+    - MariaDB
+    - mediaWiki
+    - httpd24
+    - security 
+

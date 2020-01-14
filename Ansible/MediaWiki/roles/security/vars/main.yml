@@ -1,0 +1,6 @@
+---
+# vars file for security---
+#  vars:
+    firewall_ports:
+      - - http
+        - https
