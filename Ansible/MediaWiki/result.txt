@@ -1,0 +1,223 @@
+Results:
+
+$ ansible-playbook playbook.yaml --inventory-file=inventory.txt --ask-sudo-pass
+[DEPRECATION WARNING]: The sudo command line option has been deprecated in favor of the "become" command line arguments. This feature will be
+removed in version 2.6. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+SUDO password:
+
+PLAY [Setup on first host] *********************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************
+ok: [ansible-target1]
+
+TASK [Centos7sclo : Install Software collections for centos 7] *********************************************************************************
+ok: [ansible-target1]
+
+TASK [Centos7sclo : Install packages for centos 7 with SCLO] ***********************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Start Maria/MySQL db and enable it] ********************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Check for package MySQL-python] ************************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Changing Maria/MySQL root password] ********************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Securing the Maria/MySQL root user for localhost- IPv6 (::1)] ******************************************************************
+ok: [ansible-target1] => (item=127.0.0.1)
+ok: [ansible-target1] => (item=::1)
+ok: [ansible-target1] => (item=localhost)
+
+TASK [MariaDB : Removes all anonymous users accounts] ******************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Remove the test database] ******************************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Create a new database named wikidatabase] **************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Create a db user named wiki and grant all privileges on wikidatabase] **********************************************************
+ok: [ansible-target1]
+
+TASK [mediaWiki : Download the media wiki packages] ********************************************************************************************
+ok: [ansible-target1]
+
+TASK [mediaWiki : Extracting the tar file] *****************************************************************************************************
+ok: [ansible-target1]
+
+TASK [mediaWiki : Creating a soft link] ********************************************************************************************************
+ok: [ansible-target1]
+
+TASK [httpd24 : Start httpd24-httpd.service and enable it] *************************************************************************************
+ok: [ansible-target1]
+
+TASK [httpd24 : Change the DocumentRoot path in httpd.conf] ************************************************************************************
+ok: [ansible-target1]
+
+TASK [httpd24 : Changing the Directory entry in httpd.conf] ************************************************************************************
+ok: [ansible-target1]
+
+TASK [security : Firewalld allow for services] *************************************************************************************************
+ok: [ansible-target1] => (item=http)
+ok: [ansible-target1] => (item=https)
+
+TASK [security : Firewalld service restart] ****************************************************************************************************
+changed: [ansible-target1]
+
+TASK [security : Check if SELinux is enforcing] ************************************************************************************************
+ok: [ansible-target1]
+
+TASK [security : SElinux restorecon for Mediawiki directory] ***********************************************************************************
+changed: [ansible-target1]
+
+TASK [security : SElinux restorecon for Mediawiki file] ****************************************************************************************
+changed: [ansible-target1]
+
+PLAY [Setup on 2nd host for db] ****************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************
+ok: [ansible-target2]
+
+TASK [Centos7sclo : Install Software collections for centos 7] *********************************************************************************
+changed: [ansible-target2]
+
+TASK [Centos7sclo : Install packages for centos 7 with SCLO] ***********************************************************************************
+changed: [ansible-target2]
+
+TASK [MariaDB : Start Maria/MySQL db and enable it] ********************************************************************************************
+changed: [ansible-target2]
+
+TASK [MariaDB : Check for package MySQL-python] ************************************************************************************************
+ok: [ansible-target2]
+
+TASK [MariaDB : Changing Maria/MySQL root password] ********************************************************************************************
+fatal: [ansible-target2]: FAILED! => {"changed": false, "msg": "unable to connect to database, check login_user and login_password are correct or /home/udaytk/.my.cnf has the credentials. Exception message: (1045, \"Access denied for user 'root'@'localhost' (using password: YES)\")"}
+        to retry, use: --limit @/home/udaytk/ansible/MediaWiki/playbook.retry
+
+PLAY RECAP *************************************************************************************************************************************
+ansible-target1            : ok=22   changed=3    unreachable=0    failed=0
+ansible-target2            : ok=5    changed=3    unreachable=0    failed=1
+
+
+It failed since the password had been set instead of as blank. This needs to be handled and is a bug. Its 3:30am and I can easily take it up with more time. I'd rather be honest about this. After manually handling this in the var file:
+
+$ ansible-playbook playbook.yaml --inventory-file=inventory.txt --ask-sudo-pass
+[DEPRECATION WARNING]: The sudo command line option has been deprecated in favor of the "become" command line arguments. This feature will be
+removed in version 2.6. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+SUDO password:
+
+PLAY [Setup on first host] *********************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************
+ok: [ansible-target1]
+
+TASK [Centos7sclo : Install Software collections for centos 7] *********************************************************************************
+ok: [ansible-target1]
+
+TASK [Centos7sclo : Install packages for centos 7 with SCLO] ***********************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Start Maria/MySQL db and enable it] ********************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Check for package MySQL-python] ************************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Changing Maria/MySQL root password] ********************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Securing the Maria/MySQL root user for localhost- IPv6 (::1)] ******************************************************************
+ok: [ansible-target1] => (item=127.0.0.1)
+ok: [ansible-target1] => (item=::1)
+ok: [ansible-target1] => (item=localhost)
+
+TASK [MariaDB : Removes all anonymous users accounts] ******************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Remove the test database] ******************************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Create a new database named wikidatabase] **************************************************************************************
+ok: [ansible-target1]
+
+TASK [MariaDB : Create a db user named wiki and grant all privileges on wikidatabase] **********************************************************
+ok: [ansible-target1]
+
+TASK [mediaWiki : Download the media wiki packages] ********************************************************************************************
+ok: [ansible-target1]
+
+TASK [mediaWiki : Extracting the tar file] *****************************************************************************************************
+ok: [ansible-target1]
+
+TASK [mediaWiki : Creating a soft link] ********************************************************************************************************
+ok: [ansible-target1]
+
+TASK [httpd24 : Start httpd24-httpd.service and enable it] *************************************************************************************
+ok: [ansible-target1]
+
+TASK [httpd24 : Change the DocumentRoot path in httpd.conf] ************************************************************************************
+ok: [ansible-target1]
+
+TASK [httpd24 : Changing the Directory entry in httpd.conf] ************************************************************************************
+ok: [ansible-target1]
+
+TASK [security : Firewalld allow for services] *************************************************************************************************
+ok: [ansible-target1] => (item=http)
+ok: [ansible-target1] => (item=https)
+
+TASK [security : Firewalld service restart] ****************************************************************************************************
+changed: [ansible-target1]
+
+TASK [security : Check if SELinux is enforcing] ************************************************************************************************
+ok: [ansible-target1]
+
+TASK [security : SElinux restorecon for Mediawiki directory] ***********************************************************************************
+changed: [ansible-target1]
+
+TASK [security : SElinux restorecon for Mediawiki file] ****************************************************************************************
+changed: [ansible-target1]
+
+PLAY [Setup on 2nd host for db] ****************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************
+ok: [ansible-target2]
+
+TASK [Centos7sclo : Install Software collections for centos 7] *********************************************************************************
+ok: [ansible-target2]
+
+TASK [Centos7sclo : Install packages for centos 7 with SCLO] ***********************************************************************************
+ok: [ansible-target2]
+
+TASK [MariaDB : Start Maria/MySQL db and enable it] ********************************************************************************************
+ok: [ansible-target2]
+
+TASK [MariaDB : Check for package MySQL-python] ************************************************************************************************
+ok: [ansible-target2]
+
+TASK [MariaDB : Changing Maria/MySQL root password] ********************************************************************************************
+ok: [ansible-target2]
+
+TASK [MariaDB : Securing the Maria/MySQL root user for localhost- IPv6 (::1)] ******************************************************************
+ok: [ansible-target2] => (item=127.0.0.1)
+ok: [ansible-target2] => (item=::1)
+ok: [ansible-target2] => (item=localhost)
+
+TASK [MariaDB : Removes all anonymous users accounts] ******************************************************************************************
+changed: [ansible-target2]
+
+TASK [MariaDB : Remove the test database] ******************************************************************************************************
+changed: [ansible-target2]
+
+TASK [MariaDB : Create a new database named wikidatabase] **************************************************************************************
+changed: [ansible-target2]
+
+TASK [MariaDB : Create a db user named wiki and grant all privileges on wikidatabase] **********************************************************
+changed: [ansible-target2]
+
+PLAY RECAP *************************************************************************************************************************************
+ansible-target1            : ok=22   changed=3    unreachable=0    failed=0
+ansible-target2            : ok=11   changed=4    unreachable=0    failed=0
+

@@ -8,3 +8,9 @@
     - httpd24
     - security 
 
+- name: Setup on 2nd host for db
+  hosts: ansible-target2
+  roles:
+    - Centos7sclo
+    - MariaDB
+
