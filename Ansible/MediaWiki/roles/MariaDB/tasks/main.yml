@@ -29,23 +29,8 @@
         login_password: '{{ mysql_new_pass }}'
         user: '{{ mysql_admin }}'
         password: '{{ mysql_new_pass }}'
-        host: ::1
-
-    - name: Securing the Maria/MySQL root user for localhost- IPv4 (127.0.0.1)
-      mysql_user:
-        login_user: '{{ mysql_admin }}'
-        login_password: '{{ mysql_new_pass }}'
-        user: '{{ mysql_admin }}'
-        password: '{{ mysql_new_pass }}'
-        host: 127.0.0.1
-
-    - name: Securing the Maria/MySQL root user for localhost domain
-      mysql_user:
-        login_user: '{{ mysql_admin }}'
-        login_password: '{{ mysql_new_pass }}'
-        user: '{{ mysql_admin }}'
-        password: '{{ mysql_new_pass }}'
-        host: localhost
+        host: "{{ item }}"
+      with_items: "{{ local_host }}"
 
     - name: Removes all anonymous users accounts
       mysql_user:

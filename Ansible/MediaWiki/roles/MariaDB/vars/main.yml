@@ -5,4 +5,8 @@
     wiki_user: wiki
     wiki_pass: <enterWikiPassword>
     wiki_db: wikidatabase
+    local_host:
+      - - 127.0.0.1
+        - ::1
+        - localhost
     
