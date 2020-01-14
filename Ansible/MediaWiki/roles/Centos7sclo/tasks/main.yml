@@ -6,16 +6,17 @@
         name: centos-release-scl
         state: present
       become: true
+
     - name: Install packages for centos 7 with SCLO
       yum:
         name: 
           - httpd24-httpd
-          - php55
-          - php55-php
-          - php55-php-mbstring
-          - php55-php-mysqlnd
-          - php55-php-gd
-          - php55-php-xml
+          - rh-php72 
+          - rh-php72-php 
+          - rh-php72-php-mbstring 
+          - rh-php72-php-mysqlnd 
+          - rh-php72-php-gd 
+          - rh-php72-php-xml
           - mariadb-server 
           - mariadb
           - MySQL-python
