@@ -1,3 +1,7 @@
+# It is not recommended to keep the password here and this is only a sample of the options present
+# The option to enter it via the command line is already given as part of these playbooks
+# This playbook will further be enhanced to include other mechanisms for more secure logins
+
 localhost ansible_host=127.0.0.1 ansible_ssh_pass=YourPassword@1 ansible_user=user1
 ansible-target1 ansible_host=10.0.0.2 ansible_ssh_pass=YourPassword@2 ansible_user=user1
 ansible-target2 ansible_host=10.0.0.3 ansible_ssh_pass=YourPassword@3 ansible_user=user1
